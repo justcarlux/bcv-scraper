@@ -34,11 +34,11 @@ Responde un estado HTTP `200 OK` con un JSON del siguiente formato:
 {
     "rates": {
         // Todos los cambios están expresados en Bs.
-        "eur": 0.0,
-        "cny": 0.0,
-        "try": 0.0,
-        "rub": 0.0,
-        "usd": 0.0
+        "eur": 195.67552497,
+        "cny": 23.41463208,
+        "try": 4.02676883,
+        "rub": 2.00201663,
+        "usd": 166.5834
     },
     // Última vez que la caché del servicio fue actualizada en formato de tiempo Unix
     "updatedAt": 1758351872383
