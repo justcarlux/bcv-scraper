@@ -44,10 +44,10 @@ impl fmt::Display for ScrapeError {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         match self {
             ScrapeError::Request(message) => {
-                write!(f, "[scrape error] request error: {}", message)
+                write!(f, "[scrape error] request error: {message}")
             }
             ScrapeError::Parse(message) => {
-                write!(f, "[scrape error] parse error: {}", message)
+                write!(f, "[scrape error] parse error: {message}")
             }
         }
     }
@@ -83,10 +83,9 @@ impl Scraper {
         let response = match self.client.get(&self.base_url).send().await {
             Ok(response) => response,
             Err(e) => {
-                return Err(ScrapeError::Request(format!(
-                    "failed to send request: {}",
-                    e
-                )));
+                return Err(ScrapeError::Request(
+                    format!("failed to send request: {e}",),
+                ));
             }
         };
 
@@ -102,8 +101,7 @@ impl Scraper {
             Ok(html) => html,
             Err(e) => {
                 return Err(ScrapeError::Request(format!(
-                    "failed to parse request text: {}",
-                    e
+                    "failed to parse request text: {e}",
                 )));
             }
         };
@@ -135,8 +133,7 @@ impl Scraper {
                         Ok(value) => value,
                         Err(e) => {
                             return Err(ScrapeError::Parse(format!(
-                                "failed to parse currency value as float: {}",
-                                e
+                                "failed to parse currency value as float: {e}",
                             )));
                         }
                     },
@@ -158,12 +155,11 @@ impl Scraper {
         }
 
         let dollar_rates: DollarRates =
-            match serde_json::to_value(fields).and_then(|v| serde_json::from_value(v)) {
+            match serde_json::to_value(fields).and_then(serde_json::from_value) {
                 Ok(rates) => rates,
                 Err(e) => {
                     return Err(ScrapeError::Parse(format!(
-                        "failed to map data to the dollar rates struct: {}",
-                        e
+                        "failed to map data to the dollar rates struct: {e}",
                     )));
                 }
             };
@@ -174,7 +170,7 @@ impl Scraper {
         let mut updated_at = self.updated_at.lock().unwrap();
         *updated_at = current_time_millis();
 
-        tracing::info!("successfully scraped dollar rates: {}", dollar_rates);
+        tracing::info!("successfully scraped dollar rates: {dollar_rates}",);
 
         Ok(())
     }
@@ -187,7 +183,7 @@ impl Scraper {
                 tokio::time::sleep(interval).await;
 
                 if let Err(error) = scraper.clone().perform_scrape().await {
-                    tracing::error!("periodic scrape failed: {}", error);
+                    tracing::error!("periodic scrape failed: {error}");
                 }
             }
         });

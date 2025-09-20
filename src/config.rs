@@ -13,10 +13,10 @@ impl fmt::Display for ConfigLoadError {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         match self {
             ConfigLoadError::Source(err) => {
-                write!(f, "[config load error] source error: {}", err)
+                write!(f, "[config load error] source error: {err}")
             }
             ConfigLoadError::Field(err) => {
-                write!(f, "[config load error] field error: {}", err)
+                write!(f, "[config load error] field error: {err}")
             }
         }
     }
