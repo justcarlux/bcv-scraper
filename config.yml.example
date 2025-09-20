@@ -1,0 +1,5 @@
+# Puerto de la API
+port: 
+
+# Intérvalo en milisegundos en el que la página será scrapeada para mantener la caché de la API actualizada
+interval_ms:
